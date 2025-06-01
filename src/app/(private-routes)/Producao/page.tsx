@@ -1,16 +1,23 @@
 'use client'
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import "./style.css";
 import Cabecalho from "@/components/Cabecalho/pages";
 import { API } from "@/services/api";
 
+
 type veiculo = {
   modelo: string;
   cor: string;
-  pneu: string;
-  cambio: string;
-  motor: string;
+  pneuId: string;
+  cambioId: string;
+  motorId: string;
+};
+
+type EstoqueItem = {
+  id: string;
+  descricao: string; 
+  marca: string;    
 };
 
 export default function Producao() {
@@ -19,21 +26,80 @@ export default function Producao() {
   const [pneuVeiculo, setPneuVeiculo] = useState("");
   const [cambioVeiculo, setCambioVeiculo] = useState("");
   const [motorVeiculo, setMotorVeiculo] = useState("");
-  //----------------------------------------------------------//
 
-  const [productionFromApi, setVehicles] = useState<veiculo[]>([]);
+  const [productionFromApi, setVeiculo] = useState<veiculo[]>([]);
+  const [estoques, setEstoques] = useState<EstoqueItem[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const filtrarPorDescricao = (descricao: string) =>
+    estoques.filter((item) => item.descricao === descricao);
+  
+  const buscarNomePorId = (id: string) =>
+    estoques.find((item) => item.id === id)?.marca || "";
+
+
+  async function getProducao() {
+    try {
+      const response = await API.get("/veiculos");
+      const data = response.data;
+  
+      const veiculosMapeados = data.map((item: any) => {
+        const estoqueMap: any = {}; 
+  
+        item.Veiculo_Estoque.forEach((v: any) => {
+          const tipo = v.estoque.descricao;
+          if (tipo) {
+            estoqueMap[tipo] = v.estoqueId;
+          }
+        });
+  
+        return {
+          modelo: item.modelo,
+          cor: item.cor,
+          pneuId: estoqueMap["pneu"] || "",
+          cambioId: estoqueMap["cambio"] || "",
+          motorId: estoqueMap["motor"] || "",
+        };
+      });
+  
+      setVeiculo(veiculosMapeados);
+    } catch (error) {
+      console.error("Erro ao buscar veículos:", error);
+    }
+  }
+  
+  
+  console.log()
+  async function getEstoque() {
+    try {
+      const response = await API.get('/estoques');
+      setEstoques(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar estoques:", error);
+    }
+  }
+
+  useEffect(() => {
+    getProducao();
+    getEstoque();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const newVehicle: veiculo = {
       modelo: nomeVeiculo,
       cor: corVeiculo,
-      pneu: pneuVeiculo,
-      cambio: cambioVeiculo,
-      motor: motorVeiculo,
+      pneuId: pneuVeiculo,
+      cambioId: cambioVeiculo,
+      motorId: motorVeiculo,
     };
-    setVehicles([...productionFromApi, newVehicle]);
 
+    try {
+      await API.post('/veiculos', newVehicle);
+      await getProducao();
+    } catch (error) {
+      console.error("Erro ao registrar veículo:", error);
+    }
 
     setNomeVeiculo("");
     setCorProducaoVeiculo("");
@@ -41,48 +107,6 @@ export default function Producao() {
     setCambioVeiculo("");
     setMotorVeiculo("");
   };
-
-  async function creatVeiculo() {
-
-    try {
-      const response = await API.post('/veiculos')
-      const data = response.data
-      console.log(data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async function getProduction() {
-    try {
-      const response = await API.get("/veiculos");
-      const data = response.data;
-
-      const veiculosTratados = data.map((item: any) => {
-        const estoqueMap: Record<string, string> = {};
-
-        item.Veiculo_Estoque.forEach((e: any) => {
-          estoqueMap[e.estoque.descricao.toLowerCase()] = e.estoque.marca;
-        });
-
-        return {
-          modelo: item.modelo,
-          cor: item.cor,
-          pneu: estoqueMap["pneu"] || "",
-          cambio: estoqueMap["cambio"] || "",
-          motor: estoqueMap["motor"] || ""
-        };
-      });
-
-      setVehicles(veiculosTratados);
-    } catch (error) {
-      console.error("Erro ao buscar veículos:", error);
-    }
-  }
-
-  useEffect(() => {
-    getProduction();
-  }, []);
 
   return (
     <div>
@@ -129,8 +153,11 @@ export default function Producao() {
                     onChange={(e) => setPneuVeiculo(e.target.value)}
                   >
                     <option value="">Selecione</option>
-                    <option value="Goodyear">Goodyear</option>
-                    <option value="Pirelli">Pirelli</option>
+                    {filtrarPorDescricao("pneu").map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.marca}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -143,9 +170,11 @@ export default function Producao() {
                     onChange={(e) => setCambioVeiculo(e.target.value)}
                   >
                     <option value="">Selecione</option>
-                    <option value="manual">Manual</option>
-                    <option value="automatico">Automático</option>
-                    <option value="CVT">CVT</option>
+                    {filtrarPorDescricao("cambio").map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.marca}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -158,15 +187,15 @@ export default function Producao() {
                     onChange={(e) => setMotorVeiculo(e.target.value)}
                   >
                     <option value="">Selecione</option>
-                    <option value="1.0 turbo">1.0 Turbo</option>
-                    <option value="1.4 turbo">1.4 Turbo</option>
-                    <option value="1.8 flex">1.8 Flex</option>
-                    <option value="2.0 flex">2.0 Flex</option>
+                    {filtrarPorDescricao("motor").map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.marca}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
-
-              <button className="envia-producao" type="submit" onClick={creatVeiculo}>Enviar para Produção</button>
+              <button type="submit">Enviar para Produção</button>
             </form>
           </section>
 
@@ -189,9 +218,9 @@ export default function Producao() {
                     <td>{index + 1}</td>
                     <td>{veiculo.modelo}</td>
                     <td>{veiculo.cor}</td>
-                    <td>{veiculo.pneu}</td>
-                    <td>{veiculo.cambio}</td>
-                    <td>{veiculo.motor}</td>
+                    <td>{buscarNomePorId(veiculo.pneuId)}</td>
+                    <td>{buscarNomePorId(veiculo.cambioId)}</td>
+                    <td>{buscarNomePorId(veiculo.motorId)}</td>
                   </tr>
                 ))}
               </tbody>
