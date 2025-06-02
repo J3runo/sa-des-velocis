@@ -16,14 +16,14 @@ export default function Login() {
             </div>
             <div className="inputs">
 
-                <div className="itens-1">
-                    <div className="icon-text">
+                <div className="item-name">
+                    <div className="icon-name">
                         <IoPeopleOutline size={25} />
                     </div>
                     <input type="text" />
                 </div>
-                <div className="itens-2">
-                    <div className="icon-password">
+                <div className="item-senha">
+                    <div className="icon-senha">
                         <TbLockPassword size={25} />
                     </div>
                     <input type="password" name="password" id="" />

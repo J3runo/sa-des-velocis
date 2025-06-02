@@ -43,7 +43,7 @@ body {
     margin-bottom: 16px;
 }
 
-.container .itens-1 {
+.container .item-name {
     display: flex;
     flex-direction: row;
     height: 42px;
@@ -51,7 +51,7 @@ body {
     margin-bottom: 22px;
 }
 
-.container .icon-text {
+.container .icon-name {
     background-color: #c4c4c4;
     border-right: 1px solid #a9a9a9;
     display: flex;
@@ -61,14 +61,14 @@ body {
     height: 42px;
 }
 
-.container .itens-2 {
+.container .item-senha {
     display: flex;
     flex-direction: row;
     height: 42px;
     margin-bottom: 12px;
 }
 
-.container .icon-password {
+.container .icon-senha {
     background-color: #c4c4c4;
     border-right: 1px solid #a9a9a9;
     display: flex;

@@ -36,7 +36,10 @@ export default function cadastro() {
                     </div>
                     <input type="password" name="password" id="" />
                 </div>
-                
+                <div className="button-login">
+                    <button>Salvar</button>
+                </div>
+    
             </div>
         </div >
     )
