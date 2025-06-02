@@ -5,7 +5,7 @@ import estilos from "./styles.module.css";
 import Cabecalho from "@/components/Cabecalho/pages";
 import { API } from "@/services/api";
 
-type StatusVeiculo = "aprovado" | "reprovado";
+type StatusVeiculo = true | false;
 
 interface Veiculo {
   id: string;
@@ -18,6 +18,7 @@ export default function Qualidade() {
   const [veiculos, setVeiculos] = useState<Veiculo[]>([]);
   const [abaSelecionada, setAbaSelecionada] = useState<"todos" | "aprovado" | "reprovado">("todos");
 
+  // 🔄 Buscar os veículos da API
   useEffect(() => {
     async function getVeiculos() {
       try {
@@ -28,7 +29,7 @@ export default function Qualidade() {
           id: v.id,
           modelo: v.modelo,
           dataProducao: new Date(v.createdAt).toISOString().split("T")[0],
-          status: v.aprovado ? "aprovado" : "reprovado",
+          status: v.aprovado,
         }));
 
         setVeiculos(veiculosTratados);
@@ -40,10 +41,30 @@ export default function Qualidade() {
     getVeiculos();
   }, []);
 
+
+  const handleStatusChange = async (id: string, novoStatus: StatusVeiculo) => {
+    try {
+      await API.patch(`/veiculos/${id}/status`, {
+        aprovado: novoStatus,
+      });
+
+
+      setVeiculos((prev) =>
+        prev.map((v) =>
+          v.id === id ? { ...v, status: novoStatus } : v
+        )
+      );
+    } catch (error) {
+      console.error("Erro ao atualizar status do veículo:", error);
+    }
+  };
+
   const veiculosFiltrados =
     abaSelecionada === "todos"
       ? veiculos
-      : veiculos.filter((v) => v.status === abaSelecionada);
+      : veiculos.filter((v) =>
+        abaSelecionada === "aprovado" ? v.status === true : v.status === false
+      );
 
   return (
     <div>
@@ -69,15 +90,17 @@ export default function Qualidade() {
               {veiculosFiltrados.map((veiculo) => (
                 <li key={veiculo.id} className={estilos.itemVeiculo}>
                   <strong>{veiculo.modelo}</strong> — {veiculo.dataProducao} —{" "}
-                  <span
-                    className={
-                      veiculo.status === "aprovado"
-                        ? estilos.aprovado
-                        : estilos.reprovado
-                    }
-                  >
-                    {veiculo.status === "aprovado" ? "Aprovado" : "Reprovado"}
-                  </span>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={veiculo.status === true}
+                      onChange={(e) => {
+                        const novoStatus = e.target.checked;
+                        handleStatusChange(veiculo.id, novoStatus);
+                      }}
+                    />
+                    {veiculo.status === true ? "Aprovado" : "Reprovado"}
+                  </label>
                 </li>
               ))}
             </ul>
