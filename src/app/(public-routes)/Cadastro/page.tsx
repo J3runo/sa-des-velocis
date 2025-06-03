@@ -1,11 +1,48 @@
+'use client'
 import { BsCalendar2Date, BsPersonCircle } from 'react-icons/bs'
 import './style.css'
-import { IoPeopleOutline } from 'react-icons/io5'
 import { TbLockPassword } from 'react-icons/tb'
 import { MdOutlineDriveFileRenameOutline, MdOutlineEmail } from 'react-icons/md'
+import { useState } from 'react'
+import { API } from '@/services/api'
+import { randomUUID } from 'crypto'
 
-export default function cadastro() {
-    return(
+type User = {
+    name: string,
+    email: string,
+    password: string,
+    birthDate:string
+}
+
+export default function Cadastro() {
+    const [nome, setNewNome] = useState('')
+    const [email, setNewEmail] = useState('')
+    const [senha, setNewSenha] = useState('')
+    const [dataNascimento, setNewDataNascimento] = useState('')
+
+    async function createUser() {
+        const newUser: User = {
+            name:nome,
+            email:email,
+            password:senha,
+            birthDate:dataNascimento
+        }
+        console.log(newUser)
+        try {
+            await API.post('/user/register', newUser)
+            alert("Usuário cadastrado com sucesso!")
+        } catch (error) {
+            console.error("Erro ao registrar usuário:", error)
+            alert("Erro ao cadastrar. Verifique os dados.")
+        }
+
+        setNewNome('')
+        setNewEmail('')
+        setNewSenha('')
+        setNewDataNascimento('')
+    }
+
+    return (
         <div className="container">
             <div className="icons">
                 <BsPersonCircle size={85} />
@@ -16,31 +53,52 @@ export default function cadastro() {
                     <div className="icon-name">
                         <MdOutlineDriveFileRenameOutline size={25} />
                     </div>
-                    <input type="text" />
+                    <input
+                        type="text"
+                        placeholder="Nome"
+                        value={nome}
+                        onChange={(e) => setNewNome(e.target.value)}
+                    />
                 </div>
+
                 <div className="itens-2">
                     <div className="icon-email">
                         <MdOutlineEmail size={25} />
                     </div>
-                    <input type="text" />
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setNewEmail(e.target.value)}
+                    />
                 </div>
+
                 <div className="itens-3">
                     <div className="icon-date">
                         <BsCalendar2Date size={23} />
                     </div>
-                    <input type="date" />
+                    <input type="date"
+                    value={dataNascimento}
+                    onChange={(e) => setNewDataNascimento(e.target.value)} />
                 </div>
+
                 <div className="itens-4">
                     <div className="icon-password">
                         <TbLockPassword size={25} />
                     </div>
-                    <input type="password" name="password" id="" />
+                    <input
+                        type="password"
+                        placeholder="Senha"
+                        value={senha}
+                        onChange={(e) => setNewSenha(e.target.value)}
+                    />
                 </div>
+
                 <div className="button-login">
-                    <button>Salvar</button>
+                    <button onClick={createUser}>Salvar</button>
                 </div>
-    
+
             </div>
-        </div >
+        </div>
     )
 }
