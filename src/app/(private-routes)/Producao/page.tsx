@@ -195,7 +195,7 @@ export default function Producao() {
                   </select>
                 </div>
               </div>
-              <button type="submit">Enviar para Produção</button>
+              <button className="envia-producao" type="submit">Enviar para Produção</button>
             </form>
           </section>
 

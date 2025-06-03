@@ -7,7 +7,7 @@ body {
     align-items: center;
 }
 
-.container {
+.container-login {
     background-color: #a9a9a9;
     display: flex;
     align-items: center;
@@ -19,7 +19,7 @@ body {
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 12px 13px;
 }
 
-.container .inputs {
+.container-login .inputs {
     display: flex;
     min-width: 100%;
     flex-direction: column;
@@ -28,14 +28,14 @@ body {
     
 }
 
-.container input {
+.container-login input {
     width: 100%;
     padding: 8px;
     font-size: 16px;
     border: none;
 }
 
-.container .icons {
+.container-login .icons {
     display: flex;
     margin-top: -72px;
     background-color: #a9a9a9;
@@ -43,7 +43,7 @@ body {
     margin-bottom: 16px;
 }
 
-.container .item-name {
+.container-login .item-name {
     display: flex;
     flex-direction: row;
     height: 42px;
@@ -51,7 +51,7 @@ body {
     margin-bottom: 22px;
 }
 
-.container .icon-name {
+.container-login .icon-name {
     background-color: #c4c4c4;
     border-right: 1px solid #a9a9a9;
     display: flex;
@@ -61,14 +61,14 @@ body {
     height: 42px;
 }
 
-.container .item-senha {
+.container-login .item-senha {
     display: flex;
     flex-direction: row;
     height: 42px;
     margin-bottom: 12px;
 }
 
-.container .icon-senha {
+.container-login .icon-senha {
     background-color: #c4c4c4;
     border-right: 1px solid #a9a9a9;
     display: flex;
@@ -78,7 +78,7 @@ body {
     height: 42px;
 }
 
-.container button {
+.container-login button {
     border-radius: 8px;
     border: none;
     background-color: #363636;
@@ -92,11 +92,11 @@ body {
     min-height: 62px;
 }
 
-.container button:hover {
+.container-login button:hover {
     background-color: #5c5e5d;
 }
 
-.container a {
+.container-login a {
     margin-top: 12px;
     color: black;
     font-size: 18px;
