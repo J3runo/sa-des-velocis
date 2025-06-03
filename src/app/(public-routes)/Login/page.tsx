@@ -33,8 +33,12 @@ export default function Login() {
         }
     }
 
+
+       
+
     return (
-        <div className="container">
+       
+ <div className="container-login">
             <div className="icons">
                 <BsPersonCircle size={85} />
             </div>

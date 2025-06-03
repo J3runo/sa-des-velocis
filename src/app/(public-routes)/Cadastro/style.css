@@ -113,3 +113,21 @@ body {
     min-width: 15%;
     height: 42px;
 }
+
+.container button {
+    border-radius: 8px;
+    border: none;
+    background-color: #363636;
+    color: #ffffff;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 16px;
+    cursor: pointer;
+    min-width: 100%;
+    min-height: 62px;
+}
+
+.container button:hover {
+    background-color: #5c5e5d;
+}
