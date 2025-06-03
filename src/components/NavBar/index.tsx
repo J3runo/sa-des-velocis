@@ -50,7 +50,7 @@ export default function NavBar() {
     <div className="content">
       <div className="Avatar">
         <FaRegUserCircle size={140} />
-        <h2>Bruno Silva</h2>
+        <h2>Velocis</h2>
       </div>
       {itens.map((item) => (
         <Link
