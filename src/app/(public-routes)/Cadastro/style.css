@@ -7,7 +7,7 @@ body {
     align-items: center;
 }
 
-.container {
+.container-cadastro {
     background-color: #a9a9a9;
     display: flex;
     align-items: center;
@@ -19,7 +19,7 @@ body {
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 12px 13px;
 }
 
-.container .inputs {
+.container-cadastro .inputs {
     display: flex;
     min-width: 100%;
     flex-direction: column;
@@ -28,14 +28,14 @@ body {
     
 }
 
-.container input {
+.container-cadastro input {
     width: 100%;
     padding: 8px;
     font-size: 16px;
     border: none;
 }
 
-.container .icons {
+.container-cadastro .icons {
     display: flex;
     margin-top: -72px;
     background-color: #a9a9a9;
@@ -43,7 +43,7 @@ body {
     margin-bottom: 16px;
 }
 
-.container .itens-1 {
+.container-cadastro .itens-1 {
     display: flex;
     flex-direction: row;
     height: 42px;
@@ -51,7 +51,7 @@ body {
     margin-bottom: 22px;
 }
 
-.container .icon-name {
+.container-cadastro .icon-name {
     background-color: #c4c4c4;
     border-right: 1px solid #a9a9a9;
     display: flex;
@@ -61,14 +61,14 @@ body {
     height: 42px;
 }
 
-.container .itens-2 {
+.container-cadastro .itens-2 {
     display: flex;
     flex-direction: row;
     height: 42px;
     margin-bottom: 12px;
 }
 
-.container .icon-email {
+.container-cadastro .icon-email {
     background-color: #c4c4c4;
     border-right: 1px solid #a9a9a9;
     display: flex;
@@ -78,7 +78,7 @@ body {
     height: 42px;
 }
 
-.container .itens-3 {
+.container-cadastro .itens-3 {
     display: flex;
     flex-direction: row;
     height: 42px;
@@ -86,7 +86,7 @@ body {
     margin-bottom: 22px;
 }
 
-.container .icon-date {
+.container-cadastro .icon-date {
     background-color: #c4c4c4;
     border-right: 1px solid #a9a9a9;
     display: flex;
@@ -96,7 +96,7 @@ body {
     height: 42px;
 }
 
-.container .itens-4 {
+.container-cadastro .itens-4 {
     display: flex;
     flex-direction: row;
     height: 42px;
@@ -104,7 +104,7 @@ body {
     margin-bottom: 22px;
 }
 
-.container .icon-password {
+.container-cadastro .icon-password {
     background-color: #c4c4c4;
     border-right: 1px solid #a9a9a9;
     display: flex;
@@ -114,7 +114,7 @@ body {
     height: 42px;
 }
 
-.container button {
+.container-cadastro button {
     border-radius: 8px;
     border: none;
     background-color: #363636;
@@ -128,6 +128,15 @@ body {
     min-height: 62px;
 }
 
-.container button:hover {
+.container-cadastro button:hover {
     background-color: #5c5e5d;
+}
+
+
+.container-cadastro a {
+    margin-top: 12px;
+    color: black;
+    font-size: 18px;
+    text-decoration: none;
+    margin-left: 8px;
 }
