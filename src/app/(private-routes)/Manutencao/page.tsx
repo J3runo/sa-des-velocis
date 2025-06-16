@@ -5,16 +5,30 @@ import { useEffect, useState } from "react";
 import "./Style.css";
 import { API } from "@/services/api";
 
+// Interface dos componentes de estoque vinculados ao veículo
+interface Componente {
+  id: string;
+  descricao: string;
+  marca: string;
+  quantidade: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Interface do veículo
 interface Manutencao {
   id: string;
-  description: string;
+  modelo: string;
   cor: string;
   createdAt: string;
   updatedAt: string;
-  ativo: boolean;
+  aprovado: boolean;
+  motor: Componente;
+  pneu: Componente;
+  cambio: Componente;
 }
 
-export default function manutencao() {
+export default function ManutencaoPage() {
   const [manutencao, setManutencao] = useState<Manutencao[]>([]);
 
   useEffect(() => {
@@ -27,7 +41,7 @@ export default function manutencao() {
       console.log("Dados recebidos da API:", response.data);
       setManutencao(response.data);
     } catch (error) {
-      console.log(error);
+      console.log("Erro ao carregar veículos:", error);
     }
   }
 
@@ -36,36 +50,23 @@ export default function manutencao() {
       <Cabecalho name="Manutenção" />
 
       <div className="container-manutencao">
-        <h1>Veículos Cadastrados</h1>
+        <h2>Veículos para revisão</h2>
 
-        {manutencao.length === 0 ? (
-          <p>Nenhum veículo encontrado.</p>
-        ) : (
-          <table className="tabela-veiculos">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Descrição</th>
-                <th>Cor</th>
-                <th>Criado em</th>
-                <th>Atualizado em</th>
-                <th>Ativo</th>
-              </tr>
-            </thead>
-            <tbody>
-              {manutencao.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.description}</td>
-                  <td>{item.cor}</td>
-                  <td>{new Date(item.createdAt).toLocaleString()}</td>
-                  <td>{new Date(item.updatedAt).toLocaleString()}</td>
-                  <td>{item.ativo ? "✅" : "❌"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <div className="veiculo-manutencao">
+          {manutencao.map((item) => (
+            <div key={item.id} className="item-veiculo">
+              <p><strong>ID:</strong> {item.id}</p>
+              <p><strong>Modelo:</strong> {item.modelo}</p>
+              <p><strong>Cor:</strong> {item.cor}</p>
+              <p><strong>Fabricado:</strong> {new Date(item.createdAt).toLocaleDateString()}</p>
+
+              <p><strong>Motorização:</strong> {item.motor?.marca}</p>
+              <p><strong>Câmbio:</strong> {item.cambio?.marca}</p>
+              <p><strong>Pneu:</strong> {item.pneu?.marca}</p>
+              <p>{item.aprovado ? "✅" : "❌"}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
